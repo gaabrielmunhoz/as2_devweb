@@ -19,5 +19,6 @@ CREATE TABLE tarefa (
     titulo_tarefa VARCHAR(100) NOT NULL,
     descricao_tarefa text,
     status_tarefa ENUM('pendente','concluida') DEFAULT 'pendente',
+    tarefa_arquivada TINYINT(1) NOT NULL DEFAULT 0,
     FOREIGN KEY (id_lista) REFERENCES listas(id_lista)
 );
