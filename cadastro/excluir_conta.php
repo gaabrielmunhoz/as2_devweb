@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     mysqli_stmt_execute($stmt_delete);
     mysqli_stmt_close($stmt_delete);
     session_destroy();
-    header("Location: ../login/index.html");
+    header("Location: ../cadastro/sucesso_exclusao.php");
     exit();
   } else {
     echo '<div class="container mt-3"><div class="alert alert-danger text-center">Senha incorreta.</div></div>';
