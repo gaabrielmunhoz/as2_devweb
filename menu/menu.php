@@ -69,7 +69,7 @@ if (!isset($_SESSION["login_usuario"])) {
         <div class="text-center mt-3">
             <a href="#" class="btn btn-outline-verde btn-block mb-2">Áreas de trabalho</a>
             <a href="#" class="btn btn-outline-roxo btn-block mb-2">Tarefas arquivadas</a>
-            <a href="#" class="btn btn-outline-verde btn-block mb-2">Editar perfil</a>
+            <a href="../cadastro/editar_cadastro.php?id_usuario=<?php echo $_SESSION['id_usuario']; ?>" class="btn btn-outline-verde btn-block mb-2">Editar perfil</a>
             <a href="../login/script_logout.php" class="btn btn-outline-roxo btn-block mb-2" onclick="return confirm('Tem certeza que deseja encerrar a sessão?')">Sair</a>
         </div>
     </div>

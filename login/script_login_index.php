@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($senha_usuario, $usuario["senha_usuario"])) {
             $_SESSION["login_usuario"] = $usuario["login_usuario"];
             $_SESSION["nome_usuario"] = $usuario["nome_usuario"];
+            $_SESSION["id_usuario"] = $usuario["id_usuario"];
             header("Location: ../menu/menu.php");
             exit();
         } else {
