@@ -29,29 +29,34 @@
 <?php
 include "../banco_de_dados/conecta_bd.php";
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nome_usuario = $_POST['nome_usuario'] ?? '';
     $login_usuario = $_POST['login_usuario'] ?? '';
     $senha_usuario = $_POST['senha_usuario'] ?? '';
+    $sql_check = "SELECT * FROM usuarios WHERE login_usuario = ?";
+    $stmt_check = mysqli_prepare($conn, $sql_check);
+    mysqli_stmt_bind_param($stmt_check, "s", $login_usuario);
+    mysqli_stmt_execute($stmt_check);
+    $resultado_check = mysqli_stmt_get_result($stmt_check);
+    if (mysqli_fetch_assoc($resultado_check)){
+        header("Location: ../login/erro.php?tipo=email");
+        exit();
+    }
     $senha_criptografada = password_hash($senha_usuario, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO usuarios (nome_usuario, login_usuario, senha_usuario) VALUES ('$nome_usuario', '$login_usuario', '$senha_criptografada')";
+    $sql = "INSERT INTO usuarios (nome_usuario, login_usuario, senha_usuario) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sss", $nome_usuario, $login_usuario, $senha_criptografada);
 
-    if (mysqli_query($conn, $sql)){
-        echo "<div class='alert alert-success text-center mt-4'>Usuário cadastrado com sucesso!</div>";
-        echo "<div class='text-center'><a href='../login/index.html' class='btn btn-roxo mt-3'>Voltar para página inicial</a></div>";
+    if (mysqli_stmt_execute($stmt)){
+        header("Location: ../cadastro/sucesso_cadastro.php");
+        exit();
     } else {
-        echo "<div class='alert alert-danger text-center mt-4'>Erro ao cadastrar usuário: " . mysqli_error($conn) . "</div>";
-        echo "<div class='text-center'><a href='../login/index.html' class='btn btn-roxo mt-3'>Voltar para página inicial</a></div>";
+        header("Location: ../login/erro.php?tipo=erro");
+        exit();
     }
 
-    mysqli_close($conn);
-} else {
-    header("Location: ../cadastro/cadastro.html");
-    exit;
 }
 ?>
 
