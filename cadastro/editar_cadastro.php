@@ -79,7 +79,7 @@ $linhas = mysqli_fetch_assoc($dados);
       </div>
 
       <div class="text-center mt-3">
-        <a href="../login/index.html" class="btn btn-roxo btn-block">Alterar senha</a>
+        <a href="../cadastro/alterar_senha.php" class="btn btn-roxo btn-block">Alterar senha</a>
       </div>
 
       <div class="text-center mt-3">
