@@ -89,6 +89,10 @@ $linhas = mysqli_fetch_assoc($dados);
       <div class="text-center mt-3">
         <a href="../menu/menu.php" class="btn btn-roxo btn-block">Cancelar alterações</a>
       </div>
+
+      <div class="text-center mt-3">
+        <a href="../cadastro/excluir_conta.php" class="btn btn-outline-danger btn-block">Excluir conta</a>
+      </div>
     </form>
   </div>
 </div>
