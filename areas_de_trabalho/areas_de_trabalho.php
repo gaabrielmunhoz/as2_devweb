@@ -1,18 +1,26 @@
 <?php
 session_start();
-
-// Redireciona se não estiver logado
 if (!isset($_SESSION["login_usuario"])) {
   header("Location: ../login/index.html");
   exit();
 }
+
+include "../banco_de_dados/conecta_bd.php";
+
+$id_usuario = $_SESSION['id_usuario'];
+$sql = "SELECT id_lista, nome_lista FROM listas WHERE id_usuario = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id_usuario);
+$stmt->execute();
+$result = $stmt->get_result();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Menu | ToDoTasks</title>
+  <title>Áreas de Trabalho | ToDoTasks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <style>
@@ -60,17 +68,21 @@ if (!isset($_SESSION["login_usuario"])) {
 
   <div class="container text-center mt-2 mb-4">
     <img src="../imagens/logoToDoTasks.png" class="img-fluid mx-auto d-block" width="150" alt="Logo">
-    <h5 class="mt-3">Bem-vindo(a), <?php echo $_SESSION["nome_usuario"]; ?>!</h5>
   </div>
 
   <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
     <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
-        <h4 class="text-center mb-4">Menu</h4>
+        <h4 class="text-center mb-4">Áreas de trabalho</h4>
         <div class="text-center mt-3">
-            <a href="../areas_de_trabalho/areas_de_trabalho.php" class="btn btn-outline-verde btn-block mb-2">Áreas de trabalho</a>
-            <a href="../areas_de_trabalho/tarefas_arquivadas.php" class="btn btn-outline-roxo btn-block mb-2">Tarefas arquivadas</a>
-            <a href="../cadastro/editar_cadastro.php?id_usuario=<?php echo $_SESSION['id_usuario']; ?>" class="btn btn-outline-verde btn-block mb-2">Editar perfil</a>
-            <a href="../login/script_logout.php" class="btn btn-outline-roxo btn-block mb-2" onclick="return confirm('Tem certeza que deseja encerrar a sessão?')">Sair</a>
+            <a href="../areas_de_trabalho/criar_area_de_trabalho.php" class="btn btn-outline-verde btn-block">Criar</a>
+            <?php
+                while ($row = $result->fetch_assoc()) {
+                    echo "<a href='../areas_de_trabalho/lista.php?id_lista={$row['id_lista']}' class='btn btn-roxo btn-block mb-2'>{$row['nome_lista']}</a>";
+                }
+            ?>
+        </div>
+        <div class="text-center">
+            <a href="../menu/menu.php" class="btn btn-outline-verde btn-block mb-2">Voltar</a>
         </div>
     </div>
   </div>
